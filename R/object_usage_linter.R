@@ -160,9 +160,6 @@ extract_glued_symbols <- function(expr) {
   }
   glued_symbols <- new.env(parent = emptyenv())
 
-  unexpected_error <- function(cond) {
-    stop("Unexpected failure to parse glue call, please report: ", conditionMessage(cond))
-  }
   for (cl in glue_calls) {
     # TODO(michaelchirico): consider dropping tryCatch() here if we're more confident in our logic
     parsed_cl <- tryCatch(
@@ -203,6 +200,10 @@ symbol_extractor <- function(text, envir, data) {
     assign(sym, NULL, envir = envir)
   }
   ""
+}
+
+unexpected_error <- function(cond) {
+  stop("Unexpected failure to parse glue call, please report: ", conditionMessage(cond)) # nocov
 }
 
 get_assignment_symbols <- function(xml) {
